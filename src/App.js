@@ -8,7 +8,7 @@ import axios from "axios";
 function App() {
   const [accountID, setAccountID] = useState("");
   const [bucketName, setBucketName] = useState("");
-  const [files, setFiles] = useState([]);
+  const [file, setFile] = useState("");
 
   const handleAccountIDChange = (e) => {
     if (e.target.value) {
@@ -24,14 +24,14 @@ function App() {
 
   const handleFileChange = (e) => {
     if (e.target.value) {
-      setFiles(e.target.value);
+      setFile(e.target.value);
     }
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const canSave = [accountID, bucketName, files].every((val) => Boolean(val));
+    const canSave = [accountID, bucketName, file].every((val) => Boolean(val));
 
     // console.log(canSave);
 
@@ -39,33 +39,34 @@ function App() {
       const requestBody = {
         accountID: accountID,
         bucketName: bucketName,
-        files: files,
+        file: file,
       };
 
       console.log(requestBody);
 
-      // try {
-      //   const response = await axios.post(
-      //     "http://localhost:7071/api/issue",
-      //     requestBody,
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   );
 
-      //   setAccountID("");
-      //   setBucketName("");
-      //   setFiles([]);
+      try {
+        const response = await axios.post(
+          "http://localhost:7071/api/file",
+          requestBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      //   e.target.reset();
+        setAccountID("");
+        setBucketName("");
+        setFile("");
 
-      //   console.log("POST request successful", response.data);
+        e.target.reset();
 
-      // } catch (error) {
-      //   console.error("Error:", error);
-      // }
+        console.log("POST request successful", response.data);
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
 
@@ -73,7 +74,7 @@ function App() {
     e.preventDefault();
     setAccountID("");
     setBucketName("");
-    setFiles([]);
+    setFile("");
   };
 
   return (
@@ -89,7 +90,7 @@ function App() {
             />
             <h2>File Uploader</h2>
             <p className="lead mb-1">
-              Feel free to use this application to upload files to S3 Bucket.
+              Feel free to use this application to upload file to S3 Bucket.
               Have great day.
             </p>
           </div>
