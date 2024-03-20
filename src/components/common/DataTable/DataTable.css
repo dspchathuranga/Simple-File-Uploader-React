@@ -1,0 +1,23 @@
+.rdt_TableHeadRow {
+    color: #6b6767;
+    font-weight: bolder;
+    background: #92b8f8 !important;
+    border-radius: 4px;
+  }
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #88888850;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #5555554f;
+}
+
+.cRTDms {
+  background-color: transparent !important;
+}
