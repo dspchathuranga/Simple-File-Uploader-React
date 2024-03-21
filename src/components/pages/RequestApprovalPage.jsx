@@ -1,5 +1,6 @@
 import React from "react";
 import DataTable from "../common/DataTable/DataTable";
+import logo from "./../../assets/cbrain-logo.png";
 
 const RequestApprovalPage = () => {
     
@@ -25,7 +26,7 @@ const RequestApprovalPage = () => {
       width: "180px",
     },
     {
-      name: "Options",
+      name: "Action",
       width: "190px",
       cell: (row) => (
         <>
@@ -70,11 +71,27 @@ const RequestApprovalPage = () => {
   ];
   
   return (
-    <div>
-      <div className="row d-flex justify-content-center">
-        <div className="col-auto">
-          <div className="py-2 mt-5 px-5">
-          <h1 className="py-3">Request Approval</h1>
+
+    <div className="app">
+      <div className="container">
+        <main className="m-3">
+          <div className="py-2 text-center">
+            <img
+              className="d-block mx-auto"
+              src={logo}
+              alt="Logo"
+              width={150}
+            />
+            <h2>Request Approval</h2>
+            <p className="lead mb-1">
+              Pending approvel files.
+              Have great day.
+            </p>
+          </div>
+
+          <div className="row g-1">
+            <div className="col-1"></div>
+            <div className="col-10">
             <DataTable
               selectableRows={false}
               tableData={dummyData}
@@ -82,10 +99,29 @@ const RequestApprovalPage = () => {
               pagination={true}
               transparent={true}
             />
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
+
+
+    // <div>
+    //   <div className="row d-flex justify-content-center">
+    //     <div className="col-auto">
+    //       <div className="py-2 mt-5 px-5">
+    //       <h1 className="py-3">Request Approval</h1>
+    //         <DataTable
+    //           selectableRows={false}
+    //           tableData={dummyData}
+    //           tableHeading={tableHeadings}
+    //           pagination={true}
+    //           transparent={true}
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

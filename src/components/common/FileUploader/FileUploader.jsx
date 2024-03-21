@@ -95,7 +95,8 @@ const FileUploader = () => {
           </div>
 
           <div className="row g-1">
-            <div className="col-12">
+            <div className="col-2"></div>
+            <div className="col-8">
               <form className="needs-validation" onSubmit={handleFormSubmit}>
                 <div className="row g-3">
                   {/* Code for Account ID input text option */}

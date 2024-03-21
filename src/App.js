@@ -5,6 +5,7 @@ import UploadStatusPage from './components/pages/UploadStatusPage';
 import HomePage from './components/pages/HomePage';
 import FileUploader from './components/common/FileUploader/FileUploader';
 import CustomNavBar from './components/common/NavBar/CustomNavBar';
+import AWSCognito from './components/pages/AWSCognito';
 
 const App = () => {
   return (
@@ -12,7 +13,8 @@ const App = () => {
       <div>
         <CustomNavBar />
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<AWSCognito />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/file-upload" element={<FileUploader />} />
           <Route path="/upload-status" element={<UploadStatusPage />} />
           <Route path="/request-approval" element={<RequestApprovalPage />} />
