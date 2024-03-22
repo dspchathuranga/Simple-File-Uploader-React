@@ -58,31 +58,6 @@ const UploadStatusPage = () => {
     },
   ];
 
-  // const dummyData = [
-  //   {
-  //     userID: 1,
-  //     accountID: 101,
-  //     bucketName: "Bucket 1",
-  //     fileName: "File 1",
-  //     status: "Active",
-  //   },
-  //   {
-  //     userID: 2,
-  //     accountID: 102,
-  //     bucketName: "Bucket 2",
-  //     fileName: "File 2",
-  //     status: "Inactive",
-  //   },
-  //   {
-  //     userID: 3,
-  //     accountID: 103,
-  //     bucketName: "Bucket 3",
-  //     fileName: "File 3",
-  //     status: "Pending",
-  //   },
-  //   // Add more dummy data as needed
-  // ];
-
   return (
     <div className="app">
       <div className="container">
@@ -125,22 +100,6 @@ const UploadStatusPage = () => {
       </div>
     </div>
 
-    // <div>
-    //   <div className="row d-flex justify-content-center">
-    //     <div className="col-auto">
-    //       <div className="py-2 mt-5 px-5">
-    //       <h1 className="py-3">Upload Status</h1>
-    //         <DataTable
-    //           selectableRows={false}
-    //           tableData={dummyData}
-    //           tableHeading={tableHeadings}
-    //           pagination={true}
-    //           transparent={true}
-    //         />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 

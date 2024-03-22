@@ -3,22 +3,27 @@ import logo from "../../../assets/cbrain-logo.png";
 // import { accountIDs, bucketNames } from "./data";
 import { useState } from "react";
 import axios from "axios";
-import { selectCurrentUser, selectCurrentToken } from "../../../contexts/auth/authSlice";
+import {
+  selectCurrentUser,
+  selectCurrentToken,
+} from "../../../contexts/auth/authSlice";
 import { useSelector } from "react-redux";
+import "./../../common/Spinner.css";
+import { PulseLoader } from "react-spinners";
 
 const FileUploader = () => {
+  const [loading, setLoading] = useState(false);
   const user = useSelector(selectCurrentUser);
   const token = useSelector(selectCurrentToken);
   const email = user && user.email;
   const [accountID, setAccountID] = useState("");
   const [userID, setUserID] = useState("");
   const [bucketName, setBucketName] = useState("");
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState(null);
 
   const handleAccountIDChange = (e) => {
     if (e.target.value) {
       setAccountID(e.target.value);
-      
     }
   };
 
@@ -35,15 +40,57 @@ const FileUploader = () => {
   };
 
   const handleFileChange = (e) => {
-    if (e.target.value) {
-      setFile(e.target.value);
+    const file = e.target.files[0];
+    setFile(file);
+  };
+
+  const uploadFileToS3 = async (signedUrl) => {
+    try {
+      const response = await axios.put(signedUrl, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+      // console.log(response);
+      return response;
+    } catch (error) {
+      console.error("Error while uploading file:", error);
+    }
+  };
+
+  const requestSignedUrl = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/Dev/presignedurl?fileName=${file.name}&fileType=${file.type}`
+      );
+      // console.log(response);
+      return response;
+    } catch (error) {
+      console.error("Error requesting signed URL:", error);
+    }
+  };
+
+  const submitFormData = async (requestBody) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/Dev/database`,
+        requestBody
+      );
+      // console.log(response);
+      return response;
+    } catch (error) {
+      console.error("Error requesting signed URL:", error);
     }
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const canSave = [userID, email, accountID, bucketName, file].every((val) => Boolean(val));
+    setLoading(true);
+
+    const canSave = [userID, email, accountID, bucketName, file].every((val) =>
+      Boolean(val)
+    );
 
     // console.log(canSave);
 
@@ -52,48 +99,60 @@ const FileUploader = () => {
         email: email,
         accountId: accountID,
         bucketName: bucketName,
-        fileName: file,
-        userId: userID
+        fileName: file.name,
+        userId: userID,
       };
 
-      console.log(requestBody);
+      // console.log(requestBody);
 
       try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/databasePost`,
-          requestBody,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
+        const response1 = await requestSignedUrl();
+
+        if (response1.status === 200) {
+          const response2 = await uploadFileToS3(response1.data.signedRequest);
+          if (response2.status === 200) {
+            const response = await submitFormData(requestBody);
+            console.log("POST request successful", response.data);
+            // Handle successful submission
+          } else {
+            console.error("Error:", response2.status);
           }
-        );
+        } else {
+          console.error("Error:", response1.status);
+        }
 
         setAccountID("");
         setBucketName("");
-        setUserID("")
+        setUserID("");
         setFile("");
 
         e.target.reset();
 
-        console.log("POST request successful", response.data);
+        // console.log("POST request successful", response.data);
       } catch (error) {
         console.error("Error:", error);
       }
     }
+
+    setLoading(false);
   };
 
   const handleClear = (e) => {
     e.preventDefault();
     setAccountID("");
     setBucketName("");
+    setUserID("");
     setFile("");
   };
 
   return (
     <div className="app">
-      <div className="container">
+      {loading && (
+        <div className="loading-overlay">
+          <PulseLoader color="#92B8F8" size={15} loading={loading} />
+        </div>
+      )}
+      <div className={loading ? 'blur-background' : 'container'}>
         <main className="m-3">
           <div className="py-2 text-center">
             <img

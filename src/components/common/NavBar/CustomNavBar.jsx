@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const CustomNavBar = () => {
   const user = useSelector(selectCurrentUser);
-  const isAdmin = user && user.groups.includes("Admin");
+  const isAdmin = user && user.groups.includes(`${process.env.REACT_APP_AUTHORIZE_GROUP}`);
   // console.log(userGroup, isAdmin);
 
   return (

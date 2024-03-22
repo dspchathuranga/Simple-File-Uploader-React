@@ -57,15 +57,6 @@ const AWSCognito = () => {
         //   console.log(tokenData)
           localStorage.setItem("token", token);
 
-          // const response = await axios.get(
-          //   `${process.env.REACT_APP_AUTH_URL}/v1/companies/users/${guid}`,
-          //   {
-          //     headers: {
-          //       Authorization: `Bearer ${token}`,
-          //     },
-          //   }
-          // );
-
         //   const user = {...data, ...tokenData};
           const user = {email:tokenData.email, groups:tokenData["cognito:groups"]};
           dispatch(setCredentials({ token, user }));
