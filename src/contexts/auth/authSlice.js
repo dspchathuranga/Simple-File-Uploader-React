@@ -1,10 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     token: localStorage.getItem("token"),
-    user: JSON.parse(localStorage.getItem("user")),
+    user: localStorage.getItem("token") ? {
+      email: jwtDecode(localStorage.getItem("token")).email,
+      groups: jwtDecode(localStorage.getItem("token"))["cognito:groups"]
+    } : null,
   },
   reducers: {
     setCredentials: (state, action) => {

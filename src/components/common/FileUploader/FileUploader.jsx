@@ -3,8 +3,13 @@ import logo from "../../../assets/cbrain-logo.png";
 // import { accountIDs, bucketNames } from "./data";
 import { useState } from "react";
 import axios from "axios";
+import { selectCurrentUser, selectCurrentToken } from "../../../contexts/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const FileUploader = () => {
+  const user = useSelector(selectCurrentUser);
+  const token = useSelector(selectCurrentToken);
+  const email = user && user.email;
   const [accountID, setAccountID] = useState("");
   const [userID, setUserID] = useState("");
   const [bucketName, setBucketName] = useState("");
@@ -13,6 +18,12 @@ const FileUploader = () => {
   const handleAccountIDChange = (e) => {
     if (e.target.value) {
       setAccountID(e.target.value);
+      
+    }
+  };
+
+  const handleUserIDChange = (e) => {
+    if (e.target.value) {
       setUserID(e.target.value);
     }
   };
@@ -32,32 +43,36 @@ const FileUploader = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const canSave = [accountID, bucketName, file].every((val) => Boolean(val));
+    const canSave = [userID, email, accountID, bucketName, file].every((val) => Boolean(val));
 
     // console.log(canSave);
 
     if (canSave) {
       const requestBody = {
-        accountID: accountID,
+        email: email,
+        accountId: accountID,
         bucketName: bucketName,
-        file: file,
+        fileName: file,
+        userId: userID
       };
 
       console.log(requestBody);
 
       try {
         const response = await axios.post(
-          "http://localhost:7071/api/file",
+          `${process.env.REACT_APP_API_URL}/databasePost`,
           requestBody,
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
         setAccountID("");
         setBucketName("");
+        setUserID("")
         setFile("");
 
         e.target.reset();
@@ -110,7 +125,7 @@ const FileUploader = () => {
                       id="userID"
                       placeholder="Enter User ID"
                       value={userID}
-                      onChange={handleAccountIDChange}
+                      onChange={handleUserIDChange}
                       required
                     />
                   </div>
