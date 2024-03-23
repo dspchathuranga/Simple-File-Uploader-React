@@ -69,7 +69,7 @@ const AWSCognito = () => {
     } 
   };
 
-  return <div>AWSCognito</div>;
+  return <div></div>;
 };
 
 export default AWSCognito;

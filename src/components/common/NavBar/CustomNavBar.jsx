@@ -1,15 +1,23 @@
 import React from "react";
 import { Navbar, Nav, NavItem, NavLink } from "reactstrap";
 import { Link } from "react-router-dom";
-import { selectCurrentUser } from "../../../contexts/auth/authSlice";
-import { useSelector } from "react-redux";
+import "./CustomNavBar.css"
+import { useDispatch, useSelector } from "react-redux";
+import { logOut, selectCurrentUser } from "../../../contexts/auth/authSlice";
 
 const CustomNavBar = () => {
   const user = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
   const isAdmin = user && user.groups.includes(`${process.env.REACT_APP_AUTHORIZE_GROUP}`);
   // console.log(userGroup, isAdmin);
 
+  const handleLogout = () => {
+    window.history.replaceState(null, null, window.location.pathname);
+    dispatch(logOut());
+  };
+
   return (
+    <div>
     <Navbar bg="primary" expand="sm">
       <Nav>
         {/* <NavItem>
@@ -40,6 +48,10 @@ const CustomNavBar = () => {
         )}
       </Nav>
     </Navbar>
+    <div>
+      <button className="button" onClick={handleLogout}>Logout</button>
+    </div>
+    </div>
   );
 };
 
