@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import "./../../common/Spinner.css";
 import { PulseLoader } from "react-spinners";
+import toast, { Toaster } from "react-hot-toast";
 
 const FileUploader = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ const FileUploader = () => {
   const token = useSelector(selectCurrentToken);
   const email = user && user.email;
   const [accountID, setAccountID] = useState("");
-  const [userID, setUserID] = useState("");
+  const [userID, setUserID] = useState(email);
   const [bucketName, setBucketName] = useState("");
   const [file, setFile] = useState(null);
 
@@ -61,7 +62,12 @@ const FileUploader = () => {
   const requestSignedUrl = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Dev/presignedurl?fileName=${file.name}&fileType=${file.type}`
+        `${process.env.REACT_APP_API_URL}/Dev/presignedurl?fileName=${file.name}&fileType=${file.type}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // console.log(response);
       return response;
@@ -74,7 +80,12 @@ const FileUploader = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/Dev/database`,
-        requestBody
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // console.log(response);
       return response;
@@ -128,9 +139,12 @@ const FileUploader = () => {
 
         e.target.reset();
 
+        toast.success("File Upload Successfull");
+
         // console.log("POST request successful", response.data);
       } catch (error) {
         console.error("Error:", error);
+        toast.error("File Upload Error:", error);
       }
     }
 
@@ -147,12 +161,24 @@ const FileUploader = () => {
 
   return (
     <div className="app">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          success: {
+            iconTheme: {
+              primary: "#180080",
+              secondary: "#f3f3f3",
+            },
+          },
+        }}
+      />
+
       {loading && (
         <div className="loading-overlay">
           <PulseLoader color="#92B8F8" size={15} loading={loading} />
         </div>
       )}
-      <div className={loading ? 'blur-background' : 'container'}>
+      <div>
         <main className="m-3">
           <div className="py-2 text-center">
             <img
@@ -176,7 +202,7 @@ const FileUploader = () => {
                   {/* Code for Account ID input text option */}
                   <div className="col-12">
                     <label htmlFor="accountID" className="form-label">
-                      User ID
+                      User Email
                     </label>
                     <input
                       type="text"
