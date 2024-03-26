@@ -71,6 +71,11 @@ const RequestApprovalPage = () => {
           fileName: data.fileName,
           bucketName: data.bucketName,
           action: approveStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       // console.log(response);
@@ -159,7 +164,7 @@ const RequestApprovalPage = () => {
             <p className="lead mb-1">Pending approvel files. Have great day.</p>
           </div>
 
-          <div className="row g-1">
+          <div className="row g-1" disabled={loading}>
             {/* <div className="col-0.5"></div> */}
             <div className="col-12">
               <DataTable
