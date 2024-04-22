@@ -10,14 +10,14 @@ import { jwtDecode } from "jwt-decode";
 import toast, { Toaster } from "react-hot-toast";
 
 const AWSCognito = () => {
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const currentToken = useSelector(selectCurrentToken);
   const dispatch = useDispatch();
-//   const location = useLocation();
+  //   const location = useLocation();
 
   useEffect(() => {
     if (currentToken) {
-        window.location.href = "/#/file-upload";
+      window.location.href = "/#/file-upload";
     } else {
       const searchParams = new URLSearchParams(window.location.search);
       const code = searchParams.get("code");
@@ -54,19 +54,22 @@ const AWSCognito = () => {
 
         if (token) {
           const tokenData = jwtDecode(token);
-        //   console.log(tokenData)
-          localStorage.setItem("token", token);
+          //   console.log(tokenData)
+          // localStorage.setItem("token", token);
 
-        //   const user = {...data, ...tokenData};
-          const user = {email:tokenData.email, groups:tokenData["cognito:groups"]};
+          //   const user = {...data, ...tokenData};
+          const user = {
+            email: tokenData.email,
+            groups: tokenData["cognito:groups"],
+          };
           dispatch(setCredentials({ token, user }));
-        //   localStorage.setItem("user", JSON.stringify(user));
+          //   localStorage.setItem("user", JSON.stringify(user));
           window.location.href = "/#/file-upload";
         }
       } catch (error) {
         console.log(error);
       }
-    } 
+    }
   };
 
   return <div></div>;

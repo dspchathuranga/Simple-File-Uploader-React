@@ -4,11 +4,14 @@ import { jwtDecode } from "jwt-decode";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: localStorage.getItem("token"),
-    user: localStorage.getItem("token") ? {
-      email: jwtDecode(localStorage.getItem("token")).email,
-      groups: jwtDecode(localStorage.getItem("token"))["cognito:groups"]
-    } : null,
+    // token: localStorage.getItem("token"),
+    // user: localStorage.getItem("token") ? {
+    //   email: jwtDecode(localStorage.getItem("token")).email,
+    //   groups: jwtDecode(localStorage.getItem("token"))["cognito:groups"]
+    // } : null,
+
+    token: null,
+    user: null,
   },
   reducers: {
     setCredentials: (state, action) => {
@@ -19,7 +22,7 @@ const authSlice = createSlice({
     logOut: (state, action) => {
       state.token = null;
       state.user = null;
-      localStorage.clear();
+      // localStorage.clear();
     },
   },
 });
