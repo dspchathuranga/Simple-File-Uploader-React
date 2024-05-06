@@ -13,11 +13,11 @@ import toast, { Toaster } from "react-hot-toast";
 
 const UploadStatusPage = () => {
   const [loading, setLoading] = useState(true);
-  const token = useSelector(selectCurrentToken);
-  const user = useSelector(selectCurrentUser);
-  const isAdmin =
-    user && user.groups.includes(`${process.env.REACT_APP_AUTHORIZE_GROUP}`);
-  const email = user && user.email;
+  // const token = useSelector(selectCurrentToken);
+  // const user = useSelector(selectCurrentUser);
+  const isAdmin = true;
+  // user && user.groups.includes(`${process.env.REACT_APP_AUTHORIZE_GROUP}`);
+  // const email = user && user.email;
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -28,28 +28,29 @@ const UploadStatusPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Dev/database`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${process.env.REACT_APP_API_URL}/Dev/database`
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
 
       if (isAdmin) {
         {
           response.status == "200" && setData(JSON.parse(response.data.body));
         }
-      } else {
-        {
-          response.status == "200" &&
-            setData(
-              JSON.parse(response.data.body).filter(
-                (item) => item.userId === email
-              )
-            );
-        }
       }
+      // else {
+      //   {
+      //     response.status == "200" &&
+      //       setData(
+      //         JSON.parse(response.data.body).filter(
+      //           (item) => item.userId === email
+      //         )
+      //       );
+      //   }
+      // }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         toast.error("Unauthorized...");

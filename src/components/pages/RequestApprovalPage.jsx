@@ -10,7 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const RequestApprovalPage = () => {
   const [loading, setLoading] = useState(true);
-  const token = useSelector(selectCurrentToken);
+  // const token = useSelector(selectCurrentToken);
   const [data, setData] = useState([]);
   // const [approveStatus, setApproveStatus] = useState("");
 
@@ -22,12 +22,12 @@ const RequestApprovalPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Dev/database`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${process.env.REACT_APP_API_URL}/Dev/database`
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
 
       {
@@ -71,12 +71,12 @@ const RequestApprovalPage = () => {
           fileName: data.fileName,
           bucketName: data.bucketName,
           action: approveStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
       // console.log(response);
       fetchData();

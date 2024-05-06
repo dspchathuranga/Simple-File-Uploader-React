@@ -10,23 +10,24 @@ import { selectCurrentUser } from "./contexts/auth/authSlice";
 import { useSelector } from "react-redux";
 
 const App = () => {
-  const user = useSelector(selectCurrentUser);
-  const isAdmin = user && user.groups.includes(`${process.env.REACT_APP_AUTHORIZE_GROUP}`);
+  // const user = useSelector(selectCurrentUser);
+  // const isAdmin = user && user.groups.includes(`${process.env.REACT_APP_AUTHORIZE_GROUP}`);
   // console.log(userGroup, isAdmin)
 
   return (
     <div>
       <CustomNavBar />
       <Routes>
-        <Route path="/" element={<AWSCognito />} />
-        {/* <Route path="/home" element={<HomePage />} /> */}
-        <Route element={<RequireAuth />}>
-          <Route path="/file-upload" element={<FileUploader />} />
-          <Route path="/upload-status" element={<UploadStatusPage />} />
-          {isAdmin && (
+        {/* <Route path="/" element={<AWSCognito />} /> */}
+        <Route path="/" element={<FileUploader />} />
+        {/* <Route element={<RequireAuth />}> */}
+        <Route path="/file-upload" element={<FileUploader />} />
+        <Route path="/upload-status" element={<UploadStatusPage />} />
+        {/* {isAdmin && (
             <Route path="/request-approval" element={<RequestApprovalPage />} />
-          )}
-        </Route>
+          )} */}
+        <Route path="/request-approval" element={<RequestApprovalPage />} />
+        {/* </Route> */}
       </Routes>
     </div>
   );

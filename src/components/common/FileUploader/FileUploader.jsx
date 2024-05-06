@@ -14,11 +14,11 @@ import toast, { Toaster } from "react-hot-toast";
 
 const FileUploader = () => {
   const [loading, setLoading] = useState(false);
-  const user = useSelector(selectCurrentUser);
-  const token = useSelector(selectCurrentToken);
-  const email = user && user.email;
+  // const user = useSelector(selectCurrentUser);
+  // const token = useSelector(selectCurrentToken);
+  // const email = user && user.email;
   const [accountID, setAccountID] = useState("");
-  const [userID, setUserID] = useState(email);
+  const [userID, setUserID] = useState("");
   const [bucketName, setBucketName] = useState("");
   const [file, setFile] = useState(null);
 
@@ -62,12 +62,12 @@ const FileUploader = () => {
   const requestSignedUrl = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/Dev/presignedurl?fileName=${file.name}&fileType=${file.type}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `${process.env.REACT_APP_API_URL}/Dev/presignedurl?fileName=${file.name}&fileType=${file.type}`
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
       // console.log(response);
       return response;
@@ -80,12 +80,12 @@ const FileUploader = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/Dev/database`,
-        requestBody,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        requestBody
+        // {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // }
       );
       // console.log(response);
       return response;
@@ -99,7 +99,7 @@ const FileUploader = () => {
 
     setLoading(true);
 
-    const canSave = [userID, email, accountID, bucketName, file].every((val) =>
+    const canSave = [userID, userID, accountID, bucketName, file].every((val) =>
       Boolean(val)
     );
 
@@ -107,7 +107,7 @@ const FileUploader = () => {
 
     if (canSave) {
       const requestBody = {
-        email: email,
+        email: userID,
         accountId: accountID,
         bucketName: bucketName,
         fileName: file.name,
